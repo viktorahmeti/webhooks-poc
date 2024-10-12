@@ -26,4 +26,9 @@ public class WebhookService : IWebhookService{
     {
         return await _dbContext.Webhooks.Include(w => w.Event).ToListAsync();
     }
+
+    public async Task<ICollection<Webhook>> GetWebhooksForEvent(long eventId)
+    {
+        return await _dbContext.Webhooks.Where(w => w.EventId == eventId).ToListAsync();
+    }
 }

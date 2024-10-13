@@ -7,6 +7,9 @@
 *.db
 *.db-*
 
+#VS code files
+.DS_Store
+
 # dotenv files
 .env
 

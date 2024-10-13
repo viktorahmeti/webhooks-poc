@@ -7,7 +7,7 @@ using WebHooks.Services;
 namespace WebHooks.Controllers;
 
 [ApiController]
-[Route("/api/v1/[controller]")]
+[Route("/api/[controller]")]
 public class EventController : ControllerBase{
     private readonly IEventService _eventService;
 
@@ -16,13 +16,13 @@ public class EventController : ControllerBase{
     }
 
     [HttpGet]
-    [Route("event")]
+    [Route("")]
     public async Task<ICollection<Event>> GetEvents(){
         return await _eventService.GetEvents();
     }
 
     [HttpGet]
-    [Route("event/{eventId}")]
+    [Route("{eventId}")]
     public async Task<Event> GetEvent(long eventId){
         return await _eventService.GetEvent(eventId);
     }

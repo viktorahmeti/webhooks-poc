@@ -7,7 +7,7 @@ using WebHooks.Services;
 namespace WebHooks.Controllers;
 
 [ApiController]
-[Route("/api/v1/[controller]")]
+[Route("/api/[controller]")]
 public class WebhookController : ControllerBase{
     private readonly IWebhookService _webhookService;
 
@@ -15,7 +15,7 @@ public class WebhookController : ControllerBase{
         _webhookService = webhookService;
     }
 
-    [Route("webhook")]
+    [Route("")]
     [HttpPost]
     public async Task<ActionResult<WebhookResponseDTO>> CreateWebhook([FromBody] WebhookRequestDTO dto)
     {
@@ -25,14 +25,14 @@ public class WebhookController : ControllerBase{
     }
 
     [HttpGet]
-    [Route("webhook")]
+    [Route("")]
     public async Task<ICollection<WebhookResponseDTO>> GetWebhooks()
     {
         return (await _webhookService.GetWebhooks()).Select(w => w.MapToWebhookDto()).ToList();
     }
 
     [HttpDelete]
-    [Route("webhook/{webhookId}")]
+    [Route("{webhookId}")]
     public async Task DeleteWebhook(long webhookId){
         await _webhookService.DeleteWebhook(webhookId);
     }

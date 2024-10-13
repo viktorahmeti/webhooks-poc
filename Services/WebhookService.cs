@@ -31,4 +31,13 @@ public class WebhookService : IWebhookService{
     {
         return await _dbContext.Webhooks.Where(w => w.EventId == eventId).ToListAsync();
     }
+
+    public async Task DeleteWebhook(long id){
+        Webhook? webhook = await _dbContext.Webhooks.SingleOrDefaultAsync(w => w.Id == id);
+
+        if (webhook is not null){
+            _dbContext.Webhooks.Remove(webhook);
+            await _dbContext.SaveChangesAsync();
+        }
+    }
 }

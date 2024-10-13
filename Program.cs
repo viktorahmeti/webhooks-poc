@@ -19,33 +19,15 @@ builder.Services.AddDbContext<WebhookServiceContext>(options => {
 
 
 //configure HTTP Client as per guidelines: https://learn.microsoft.com/en-us/dotnet/fundamentals/networking/http/httpclient-guidelines
-var retryPipeline = new ResiliencePipelineBuilder<HttpResponseMessage>()
-    .AddRetry(new HttpRetryStrategyOptions
-    {
-        BackoffType = DelayBackoffType.Exponential,
-        MaxRetryAttempts = 3
-    })
-    .Build();
-
-var socketHandler = new SocketsHttpHandler
-{
-    MaxConnectionsPerServer = 1000,
-    PooledConnectionLifetime = TimeSpan.FromMinutes(15),
-    PooledConnectionIdleTimeout = TimeSpan.FromMinutes(1)
-};
-
-#pragma warning disable EXTEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-var resilienceHandler = new ResilienceHandler(retryPipeline)
-{
-    InnerHandler = socketHandler,
-};
-#pragma warning restore EXTEXP0001 // Type is for evaluation purposes only and is subject to change or removal in future updates. Suppress this diagnostic to proceed.
-
 builder.Services.AddHttpClient("WebhookClient")
-                .ConfigurePrimaryHttpMessageHandler(() => resilienceHandler);
-
-//Finish configuring HTTP Client
-
+                .AddStandardResilienceHandler()
+                .Configure(o => {
+                    o.Retry = new HttpRetryStrategyOptions
+                        {
+                            BackoffType = DelayBackoffType.Exponential,
+                            MaxRetryAttempts = 3
+                        };
+                });
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

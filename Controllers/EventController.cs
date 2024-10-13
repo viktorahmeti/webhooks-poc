@@ -16,19 +16,19 @@ public class EventController : ControllerBase{
     }
 
     [HttpGet]
-    [Route("/event")]
+    [Route("event")]
     public async Task<ICollection<Event>> GetEvents(){
         return await _eventService.GetEvents();
     }
 
     [HttpGet]
-    [Route("/event/{eventId}")]
+    [Route("event/{eventId}")]
     public async Task<Event> GetEvent(long eventId){
         return await _eventService.GetEvent(eventId);
     }
 
     [HttpPost]
-    [Route("/dispatch/{eventId}")]
+    [Route("dispatch/{eventId}")]
     public void DispatchEvent(long eventId)
     {
         _eventService.DispatchEvent(eventId);

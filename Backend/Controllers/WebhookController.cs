@@ -15,13 +15,13 @@ public class WebhookController : ControllerBase{
         _webhookService = webhookService;
     }
 
-    [Route("")]
     [HttpPost]
+    [Route("")]
     public async Task<ActionResult<WebhookResponseDTO>> CreateWebhook([FromBody] WebhookRequestDTO dto)
     {
         Webhook savedWebhook = await _webhookService.CreateWebhook(dto.MapToWebhookEntity());
-        WebhookResponseDTO responseObject = savedWebhook.MapToWebhookDto();
-        return Created("", responseObject);
+        
+        return Created("", savedWebhook.MapToWebhookDto());
     }
 
     [HttpGet]
@@ -33,7 +33,12 @@ public class WebhookController : ControllerBase{
 
     [HttpDelete]
     [Route("{webhookId}")]
-    public async Task DeleteWebhook(long webhookId){
-        await _webhookService.DeleteWebhook(webhookId);
+    public async Task<ActionResult> DeleteWebhook(long webhookId){
+        bool deleted = await _webhookService.DeleteWebhook(webhookId);
+
+        if (!deleted)
+            return BadRequest();
+        
+        return Ok();
     }
 }

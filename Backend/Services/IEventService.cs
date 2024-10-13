@@ -3,7 +3,7 @@ using WebHooks.Models;
 namespace WebHooks.Services;
 
 public interface IEventService{
-    Task<Event> GetEvent(long eventId);
+    Task<Event?> GetEvent(long eventId);
     Task<ICollection<Event>> GetEvents();
-    void DispatchEvent(long eventId);
+    Task<bool> DispatchEvent(long eventId);
 }

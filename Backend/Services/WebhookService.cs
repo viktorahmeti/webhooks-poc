@@ -12,13 +12,12 @@ public class WebhookService : IWebhookService{
     }
 
     public async Task<Webhook> CreateWebhook(Webhook webhook){
-        Console.WriteLine(webhook.Endpoint.AbsoluteUri);
         await _dbContext.Webhooks.AddAsync(webhook);
         await _dbContext.SaveChangesAsync();
-        return await GetWebhookById(webhook.Id);
+        return (await GetWebhookById(webhook.Id))!;
     }
 
-    public async Task<Webhook> GetWebhookById(long id){
+    public async Task<Webhook?> GetWebhookById(long id){
         return await _dbContext.Webhooks.Include(w => w.Event).SingleOrDefaultAsync(w => w.Id == id);
     }
 
@@ -32,12 +31,15 @@ public class WebhookService : IWebhookService{
         return await _dbContext.Webhooks.Where(w => w.EventId == eventId).ToListAsync();
     }
 
-    public async Task DeleteWebhook(long id){
+    public async Task<bool> DeleteWebhook(long id){
         Webhook? webhook = await _dbContext.Webhooks.SingleOrDefaultAsync(w => w.Id == id);
 
-        if (webhook is not null){
-            _dbContext.Webhooks.Remove(webhook);
-            await _dbContext.SaveChangesAsync();
-        }
+        if(webhook is null)
+            return false;
+
+        _dbContext.Webhooks.Remove(webhook);
+        await _dbContext.SaveChangesAsync();
+
+        return true;
     }
 }

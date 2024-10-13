@@ -16,19 +16,21 @@ public class EventService : IEventService
         _webhookHttpClient = webhookHttpClient;
     }
 
-    public async void DispatchEvent(long eventId)
+    //returns false if event doesn't exist, true otherwise
+    public async Task<bool> DispatchEvent(long eventId)
     {
         Event? theEvent = await _dbContext.Events.Include(e => e.Webhooks).SingleOrDefaultAsync(e => e.Id == eventId);
 
         if (theEvent is null){
-            //implement bad request
-            return;
+            return false;
         }
 
         _webhookHttpClient.CallWebhooks(theEvent);
+
+        return true;
     }
 
-    public async Task<Event> GetEvent(long eventId)
+    public async Task<Event?> GetEvent(long eventId)
     {
         return await _dbContext.Events.SingleOrDefaultAsync(e => e.Id == eventId);
     }

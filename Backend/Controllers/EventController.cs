@@ -20,19 +20,35 @@ public class EventController : ControllerBase{
     [HttpGet]
     [Route("")]
     public async Task<ICollection<EventDTOWithWebhooks>> GetEvents(){
-        return (await _eventService.GetEvents()).Select(e => e.MapToEventDTOWithWebhooks()).ToList();
+        ICollection<Event> eventEntities = await _eventService.GetEvents();
+
+        if (eventEntities is null)
+            return [];
+
+        //include the webhooks of each event
+        return eventEntities.Select(e => e.MapToEventDTOWithWebhooks()).ToList();
     }
 
     [HttpGet]
     [Route("{eventId}")]
-    public async Task<EventDTO> GetEvent(long eventId){
-        return (await _eventService.GetEvent(eventId)).MapToEventDTO();
+    public async Task<ActionResult<EventDTO>> GetEvent(long eventId){
+        Event? eventEntity = await _eventService.GetEvent(eventId);
+
+        if (eventEntity is null)
+            return NotFound();
+
+        return eventEntity.MapToEventDTO();
     }
 
     [HttpPost]
     [Route("dispatch/{eventId}")]
-    public void DispatchEvent(long eventId)
+    public async Task<ActionResult> DispatchEvent(long eventId)
     {
-        _eventService.DispatchEvent(eventId);
+        bool wrongId = await _eventService.DispatchEvent(eventId);
+
+        if (wrongId)
+            return NotFound();
+        
+        return Ok();
     }
 }

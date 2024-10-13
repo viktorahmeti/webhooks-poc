@@ -21,6 +21,6 @@ Assuming you have cloned the project, go to the **Frontend** folder and run `npm
 
 ## How to use the web app
 
-In the main page click **Add New Webhook**, select the Event you want to subscribe to, and write the webhook URL. When you click **Add** everything will be set up.  
+In the main page click **Add New Webhook**, select the Event you want to subscribe to, and write the webhook URL. When you click **Add** everything will be set up. You can click the created Webhook if you want to delete it.
 
 The button **Dispatch EVENT_TYPE** simulates the dispatching of that event type, so when you click it your endpoint should be called.

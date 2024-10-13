@@ -19,4 +19,11 @@ public static class WebhookMapperExtension{
             EventDescription = entity.Event.Description
         };
     }
+
+    public static WebhookSimpleDTO MapToWebhookSimpleDto(this Webhook entity){
+        return new WebhookSimpleDTO{
+            Id = entity.Id,
+            Endpoint = entity.Endpoint.AbsoluteUri,
+        };
+    }
 }

@@ -11,3 +11,8 @@ public class WebhookResponseDTO{
     public required string EventName {get; set;}
     public required string EventDescription {get; set;}
 }
+
+public class WebhookSimpleDTO{
+    public required long Id {get; set;}
+    public required string Endpoint {get; set;}
+}

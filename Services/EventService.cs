@@ -35,6 +35,6 @@ public class EventService : IEventService
 
     public async Task<ICollection<Event>> GetEvents()
     {
-        return await _dbContext.Events.ToListAsync();
+        return await _dbContext.Events.Include(e => e.Webhooks).ToListAsync();
     }
 }

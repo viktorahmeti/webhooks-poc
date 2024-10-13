@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using WebHooks.Database;
+using WebHooks.DTO;
+using WebHooks.Mappers;
 using WebHooks.Models;
 using WebHooks.Services;
 
@@ -17,14 +19,14 @@ public class EventController : ControllerBase{
 
     [HttpGet]
     [Route("")]
-    public async Task<ICollection<Event>> GetEvents(){
-        return await _eventService.GetEvents();
+    public async Task<ICollection<EventDTOWithWebhooks>> GetEvents(){
+        return (await _eventService.GetEvents()).Select(e => e.MapToEventDTOWithWebhooks()).ToList();
     }
 
     [HttpGet]
     [Route("{eventId}")]
-    public async Task<Event> GetEvent(long eventId){
-        return await _eventService.GetEvent(eventId);
+    public async Task<EventDTO> GetEvent(long eventId){
+        return (await _eventService.GetEvent(eventId)).MapToEventDTO();
     }
 
     [HttpPost]

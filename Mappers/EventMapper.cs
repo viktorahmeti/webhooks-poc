@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using WebHooks.DTO;
 using WebHooks.Models;
 
@@ -10,6 +11,16 @@ public static class EventMapperExtension{
             Name = e.Name,
             Description = e.Description,
             occurredAt = DateTime.Now.ToString()
+        };
+    }
+
+    public static EventDTOWithWebhooks MapToEventDTOWithWebhooks(this Event e){
+        return new EventDTOWithWebhooks{
+            EventId = e.Id,
+            Name = e.Name,
+            Description = e.Description,
+            occurredAt = DateTime.Now.ToString(),
+            webhooks = new Collection<WebhookSimpleDTO>(e.Webhooks.Select(w => w.MapToWebhookSimpleDto()).ToList())
         };
     }
 }

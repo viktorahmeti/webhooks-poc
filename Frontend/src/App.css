@@ -1,0 +1,16 @@
+.App {
+  text-align: center;
+}
+
+.Webhook-Lists-Container{
+  display: grid;
+  gap: 2rem;
+  padding: 1rem;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media screen and (max-width: 800px) {
+  .Webhook-Lists-Container{
+    grid-template-columns: 1fr;
+  } 
+}

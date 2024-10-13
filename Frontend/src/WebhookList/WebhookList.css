@@ -1,0 +1,36 @@
+.Webhook-List-Container{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.Webhook-List-Top{
+    border: 2px solid black;
+    border-radius: 7px;
+    padding: 1rem;
+}
+
+.Webhook-List-Header{
+    font-size: 0.9rem;
+    color: gray;
+    margin-bottom: 1rem;
+}
+
+.Webhook-List{
+    list-style-type: none;
+    padding-left: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: 0;
+}
+
+.Dispatch-Button{
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    padding: 0.5rem;
+    font-weight: bold;
+    cursor: pointer;
+}

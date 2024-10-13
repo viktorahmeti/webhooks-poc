@@ -1,4 +1,4 @@
-const SEVER_API_PATH = "http://localhost:8585/api";
+export const SEVER_API_PATH = "http://localhost:8585/api";
 
 export async function DispatchEvent(eventId){
     try{
